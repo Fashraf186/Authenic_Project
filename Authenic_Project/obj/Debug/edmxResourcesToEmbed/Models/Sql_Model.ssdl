@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="dboModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="course">
+    <Key>
+      <PropertyRef Name="CourseID" />
+    </Key>
+    <Property Name="CourseID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Title" Type="varchar" MaxLength="50" />
+    <Property Name="Credits" Type="int" />
+  </EntityType>
+  <EntityType Name="enrollment">
+    <Key>
+      <PropertyRef Name="EnrollmentID" />
+    </Key>
+    <Property Name="EnrollmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Grade" Type="decimal" Precision="3" Scale="2" />
+    <Property Name="CourseID" Type="int" Nullable="false" />
+    <Property Name="StudentID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="faculty">
+    <Key>
+      <PropertyRef Name="FacultyID" />
+    </Key>
+    <Property Name="FacultyID" Type="int" Nullable="false" />
+    <Property Name="FacultyName" Type="char" MaxLength="10" Nullable="false" />
+    <Property Name="FacultyDept" Type="char" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <EntityType Name="parking">
+    <Key>
+      <PropertyRef Name="CarID" />
+    </Key>
+    <Property Name="CarID" Type="int" Nullable="false" />
+    <Property Name="CarName" Type="char" MaxLength="10" Nullable="false" />
+    <Property Name="CarOwner" Type="char" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <EntityType Name="student">
+    <Key>
+      <PropertyRef Name="StudentID" />
+    </Key>
+    <Property Name="StudentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LastName" Type="varchar" MaxLength="50" />
+    <Property Name="FirstName" Type="varchar" MaxLength="50" />
+    <Property Name="EnrollmentDate" Type="datetime" Precision="0" />
+  </EntityType>
+  <EntityType Name="testnewtable">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Name" Type="char" MaxLength="10" />
+  </EntityType>
+  <Association Name="FK_dbo_Enrollment_dbo_Course_CourseID">
+    <End Role="course" Type="Self.course" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="enrollment" Type="Self.enrollment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="course">
+        <PropertyRef Name="CourseID" />
+      </Principal>
+      <Dependent Role="enrollment">
+        <PropertyRef Name="CourseID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Enrollment_dbo_Student_StudentID">
+    <End Role="student" Type="Self.student" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="enrollment" Type="Self.enrollment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="student">
+        <PropertyRef Name="StudentID" />
+      </Principal>
+      <Dependent Role="enrollment">
+        <PropertyRef Name="StudentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="dboModelStoreContainer">
+    <EntitySet Name="course" EntityType="Self.course" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="enrollment" EntityType="Self.enrollment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="faculty" EntityType="Self.faculty" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="parking" EntityType="Self.parking" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="student" EntityType="Self.student" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="testnewtable" EntityType="Self.testnewtable" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_dbo_Enrollment_dbo_Course_CourseID" Association="Self.FK_dbo_Enrollment_dbo_Course_CourseID">
+      <End Role="course" EntitySet="course" />
+      <End Role="enrollment" EntitySet="enrollment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Enrollment_dbo_Student_StudentID" Association="Self.FK_dbo_Enrollment_dbo_Student_StudentID">
+      <End Role="student" EntitySet="student" />
+      <End Role="enrollment" EntitySet="enrollment" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
